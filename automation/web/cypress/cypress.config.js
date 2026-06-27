@@ -8,6 +8,12 @@ module.exports = defineConfig({
 
   e2e: {
     baseUrl: "https://front.serverest.dev",
-    setupNodeEvents(on, config) {},
+    setupNodeEvents(on, config) {
+
+      require('@shelex/cypress-allure-plugin/writer')(on, config);
+
+      return config;
+
+    },
   },
 });
