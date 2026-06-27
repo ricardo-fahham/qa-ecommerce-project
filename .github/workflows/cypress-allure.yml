@@ -16,15 +16,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
+        working-directory: automation/web/cypress
         run: npm install
 
       - name: Run Cypress tests
+        working-directory: automation/web/cypress
         run: npm run cy:run
 
       - name: Generate Allure report
+        working-directory: automation/web/cypress
         run: npm run allure:generate
 
       - name: Upload Allure report artifact
