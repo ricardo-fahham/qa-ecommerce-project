@@ -1,39 +1,73 @@
-// Validar a listagem de usuários e verificar se o usuário esperado está presente no array retornado.
+*** Settings ***
+Library    RequestsLibrary
+Library    Collections
+Library    String
 
-describe('Listar usuários', () => {
-  it('Deve listar o usuário recém-cadastrado', () => {
-    const email = `ricardo.${Date.now()}@example.com`;
+Suite Setup    Criar Sessao
 
-    cy.request({
-      method: 'POST',
-      url: '/usuarios',
-      body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
-        email,
-        password: '123456',
-        administrador: 'true'
-      }
-    }).then((createResponse) => {
-      expect(createResponse.status).to.eq(201);
+*** Variables ***
+${BASE_URL}    https://serverest.dev
+${USUARIOS}    /usuarios
 
-      cy.request({
-        method: 'GET',
-        url: '/usuarios'
-      }).then((listResponse) => {
-        expect(listResponse.status).to.eq(200);
-        expect(listResponse.body).to.have.property('quantidade');
-        expect(listResponse.body.usuarios).to.be.an('array');
+*** Test Cases ***
+CT-API-004 - Listar Usuários
+    # Gera um e-mail único
+    ${email}=    Generate Random String    10    [LOWER]
+    ${email}=    Set Variable    ${email}@example.com
 
-        const usuario = listResponse.body.usuarios.find(
-          (user) => user.email === email
-        );
+    # Dados do usuário
+    ${usuario}=    Create Dictionary
+    ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
+    ...    email=${email}
+    ...    password=1q2w3e4r
+    ...    administrador=true
 
-        expect(usuario).to.exist;
-        expect(usuario.nome).to.eq('Ricardo Fahham - https://youtube.com/@horadoqa');
-        expect(usuario.email).to.eq(email);
-        expect(usuario.password).to.eq('123456');
-        expect(usuario.administrador).to.eq('true');
-      });
-    });
-  });
-});
+    # Cadastro do usuário
+    ${cadastro}=    POST On Session
+    ...    serverest
+    ...    ${USUARIOS}
+    ...    json=${usuario}
+
+    Status Should Be    201    ${cadastro}
+
+    ${cadastro_json}=    Set Variable    ${cadastro.json()}
+    ${id}=    Set Variable    ${cadastro_json["_id"]}
+
+    # Lista todos os usuários
+    ${response}=    GET On Session
+    ...    serverest
+    ...    ${USUARIOS}
+
+    Status Should Be    200    ${response}
+
+    ${json}=    Set Variable    ${response.json()}
+
+    # Valida existência dos campos obrigatórios
+    Dictionary Should Contain Key    ${json}    quantidade
+    Dictionary Should Contain Key    ${json}    usuarios
+
+    ${usuarios}=    Set Variable    ${json["usuarios"]}
+
+    ${usuario_encontrado}=    Set Variable    ${False}
+
+    FOR    ${item}    IN    @{usuarios}
+        IF    "${item['_id']}" == "${id}"
+            Should Be Equal As Strings    ${item["nome"]}    Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
+            Should Be Equal As Strings    ${item["email"]}    ${email}
+            Should Be Equal As Strings    ${item["password"]}    1q2w3e4r
+            Should Be Equal As Strings    ${item["administrador"]}    true
+            ${usuario_encontrado}=    Set Variable    ${True}
+            Exit For Loop
+        END
+    END
+
+    Should Be True
+    ...    ${usuario_encontrado}
+    ...    Usuário cadastrado não foi encontrado na listagem.
+
+*** Keywords ***
+Criar Sessao
+    Create Session
+    ...    serverest
+    ...    ${BASE_URL}
+    ...    headers={"Content-Type":"application/json"}

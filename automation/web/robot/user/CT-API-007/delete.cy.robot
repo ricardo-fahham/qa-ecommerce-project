@@ -1,47 +1,68 @@
-describe('Excluir Usuário (DELETE)', () => {
-  it('Deve excluir um usuário e validar que ele não existe mais', () => {
-    const email = `ricardo.${Date.now()}@example.com`;
+*** Settings ***
+Library    RequestsLibrary
+Library    Collections
+Library    String
 
-    // Pré-condição: criar usuário
-    cy.request({
-      method: 'POST',
-      url: '/usuarios',
-      body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
-        email,
-        password: '123456',
-        administrador: 'true'
-      }
-    }).then((createResponse) => {
-      expect(createResponse.status).to.eq(201);
+Suite Setup    Criar Sessao
 
-      const userId = createResponse.body._id;
+*** Variables ***
+${BASE_URL}    https://serverest.dev
+${USUARIOS}    /usuarios
 
-      // Exclusão do usuário
-      cy.request({
-        method: 'DELETE',
-        url: `/usuarios/${userId}`
-      }).then((deleteResponse) => {
-        // Validações do DELETE
-        expect(deleteResponse.status).to.eq(200);
+*** Test Cases ***
+CT-API-007 - Excluir Usuário
+    # Gera um e-mail único
+    ${email}=    Generate Random String    10    [LOWER]
+    ${email}=    Set Variable    ${email}@example.com
 
-        expect(deleteResponse.body).to.deep.equal({
-          message: 'Registro excluído com sucesso'
-        });
+    # Dados do usuário
+    ${usuario}=    Create Dictionary
+    ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
+    ...    email=${email}
+    ...    password=1q2w3e4r
+    ...    administrador=true
 
-        // Pós-condição: validar que o usuário foi removido
-        cy.request({
-          method: 'GET',
-          url: `/usuarios/${userId}`,
-          failOnStatusCode: false
-        }).then((getResponse) => {
-          expect(getResponse.status).to.eq(400);
+    # Cadastra o usuário
+    ${cadastro}=    POST On Session
+    ...    serverest
+    ...    ${USUARIOS}
+    ...    json=${usuario}
 
-          expect(getResponse.body).to.deep.equal({
-            message: 'Usuário não encontrado'
-          });
-        });
-      });
-    });
-  });
-});
+    Status Should Be    201    ${cadastro}
+
+    ${cadastro_json}=    Set Variable    ${cadastro.json()}
+    ${id}=    Set Variable    ${cadastro_json["_id"]}
+
+    # Exclui o usuário
+    ${response}=    DELETE On Session
+    ...    serverest
+    ...    ${USUARIOS}/${id}
+
+    Status Should Be    200    ${response}
+
+    ${json}=    Set Variable    ${response.json()}
+
+    Should Be Equal As Strings
+    ...    ${json["message"]}
+    ...    Registro excluído com sucesso
+
+    # Consulta o usuário após a exclusão
+    ${consulta}=    GET On Session
+    ...    serverest
+    ...    ${USUARIOS}/${id}
+    ...    expected_status=400
+
+    Status Should Be    400    ${consulta}
+
+    ${consulta_json}=    Set Variable    ${consulta.json()}
+
+    Should Be Equal As Strings
+    ...    ${consulta_json["message"]}
+    ...    Usuário não encontrado
+
+*** Keywords ***
+Criar Sessao
+    Create Session
+    ...    serverest
+    ...    ${BASE_URL}
+    ...    headers={"Content-Type":"application/json"}

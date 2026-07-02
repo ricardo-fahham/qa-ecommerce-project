@@ -1,5 +1,5 @@
 describe('Cadastro de usuário', () => {
-  it('CT-API-001 - Deve criar um novo usuário', () => {
+  it('CT-API-001.2 - Cadastro com campos vazios', () => {
     cy.request({
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios`,
@@ -7,10 +7,10 @@ describe('Cadastro de usuário', () => {
         'Content-Type': 'application/json'
       },
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
-        email: 'ricardo.horadoqa@example.com',
-        password: '1q2w3e4r',
-        administrador: 'true'
+        nome: '',
+        email: '',
+        password: '',
+        administrador: ''
       }
     }).then((response) => {
       expect(response.status).to.eq(201);

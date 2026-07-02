@@ -1,30 +1,72 @@
-describe('CRUD Usuário - Buscar por ID', () => {
-  it('Deve criar e buscar um usuário pelo ID', () => {
-    const email = `ricardo.${Date.now()}@example.com`;
+*** Settings ***
+Library    RequestsLibrary
+Library    Collections
+Library    String
 
-    cy.request({
-      method: 'POST',
-      url: '/usuarios',
-      body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
-        email,
-        password: '123456',
-        administrador: 'true'
-      }
-    }).then((createResponse) => {
-      expect(createResponse.status).to.eq(201);
+Suite Setup    Criar Sessao
 
-      const userId = createResponse.body._id;
+*** Variables ***
+${BASE_URL}     https://serverest.dev
+${USUARIOS}     /usuarios
 
-      cy.request({
-        method: 'GET',
-        url: `https://serverest.dev/usuarios/${userId}`
-      }).then((getResponse) => {
-        expect(getResponse.status).to.eq(200);
-        expect(getResponse.body._id).to.eq(userId);
-        expect(getResponse.body.nome).to.eq('Ricardo Fahham - https://youtube.com/@horadoqa');
-        expect(getResponse.body.email).to.eq(email);
-      });
-    });
-  });
-});
+*** Test Cases ***
+CT-API-003 - Buscar Usuário por ID
+    # Gera um e-mail único
+   ${email}=          Generate Random String    10    [LOWER]
+   ${email}=          Set Variable    ${email}@example.com
+   ${email_completo}=    Set Variable    horadoqa-${email}
+
+    # Dados do usuário
+    ${usuario}=    Create Dictionary
+    ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
+    ...    email=${email_completo}
+    ...    password=1q2w3e4r
+    ...    administrador=true
+
+    # Cadastro do usuário
+    ${cadastro}=    POST On Session
+    ...    serverest
+    ...    ${USUARIOS}
+    ...    json=${usuario}
+
+    Status Should Be    201    ${cadastro}
+
+    ${cadastro_json}=    Set Variable    ${cadastro.json()}
+    ${id}=    Set Variable    ${cadastro_json["_id"]}
+
+    # Busca usuário pelo ID
+    ${response}=    GET On Session
+    ...    serverest
+    ...    ${USUARIOS}/${id}
+
+    Status Should Be    200    ${response}
+
+    ${json}=    Set Variable    ${response.json()}
+
+    # Validações
+    Should Be Equal As Strings
+    ...    ${json["nome"]}
+    ...    ${usuario["nome"]}
+
+    Should Be Equal As Strings
+    ...    ${json["email"]}
+    ...    ${email_completo}
+
+    Should Be Equal As Strings
+    ...    ${json["password"]}
+    ...    ${usuario["password"]}
+
+    Should Be Equal As Strings
+    ...    ${json["administrador"]}
+    ...    ${usuario["administrador"]}
+
+    Should Be Equal As Strings
+    ...    ${json["_id"]}
+    ...    ${id}
+
+*** Keywords ***
+Criar Sessao
+    Create Session
+    ...    serverest
+    ...    ${BASE_URL}
+    ...    headers={"Content-Type":"application/json"}

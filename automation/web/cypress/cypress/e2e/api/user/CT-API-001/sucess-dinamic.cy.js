@@ -6,7 +6,7 @@ describe('Cadastro de usuário com e-mail dinâmico', () => {
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa',
         email,
         password: '1q2w3e4r',
         administrador: 'true'

@@ -1,60 +1,95 @@
-describe('Atualizar usuário', () => {
-  it('Deve atualizar um usuário existente mantendo o mesmo _id', () => {
-    const emailOriginal = `ricardo.${Date.now()}@example.com`;
-    const emailAtualizado = `ricardo.atualizado.${Date.now()}@example.com`;
+*** Settings ***
+Library    RequestsLibrary
+Library    Collections
+Library    String
 
-    // Cria o usuário
-    cy.request({
-      method: 'POST',
-      url: 'https://serverest.dev/usuarios',
-      body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
-        email: emailOriginal,
-        password: '123456',
-        administrador: 'true'
-      }
-    }).then((createResponse) => {
-      expect(createResponse.status).to.eq(201);
+Suite Setup    Criar Sessao
 
-      const userId = createResponse.body._id;
+*** Variables ***
+${BASE_URL}    https://serverest.dev
+${USUARIOS}    /usuarios
 
-      // Atualiza o usuário
-      cy.request({
-        method: 'PUT',
-        url: `https://serverest.dev/usuarios/${userId}`,
-        body: {
-          nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
-          email: emailAtualizado,
-          password: '123456',
-          administrador: 'true'
-        }
-      }).then((updateResponse) => {
-        // A API pode retornar 200 ou 201
-        expect([200, 201]).to.include(updateResponse.status);
+*** Test Cases ***
+CT-API-005 - Atualizar Usuário
+    # Gera um e-mail único para o cadastro
+    ${email}=    Generate Random String    10    [LOWER]
+    ${email}=    Set Variable    ${email}@example.com
 
-        expect(updateResponse.body.message).to.eq(
-          'Registro alterado com sucesso'
-        );
+    ${usuario}=    Create Dictionary
+    ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
+    ...    email=${email}
+    ...    password=1q2w3e4r
+    ...    administrador=true
 
-        // Busca o usuário atualizado
-        cy.request({
-          method: 'GET',
-          url: `https://serverest.dev/usuarios/${userId}`
-        }).then((getResponse) => {
-          expect(getResponse.status).to.eq(200);
+    # Cadastra o usuário
+    ${cadastro}=    POST On Session
+    ...    serverest
+    ...    ${USUARIOS}
+    ...    json=${usuario}
 
-          // Valida que o ID não mudou
-          expect(getResponse.body._id).to.eq(userId);
+    Status Should Be    201    ${cadastro}
 
-          // Valida os dados atualizados
-          expect(getResponse.body.nome).to.eq(
-            'Ricardo Fahham - https://youtube.com/@horadoqa'
-          );
-          expect(getResponse.body.email).to.eq(emailAtualizado);
-          expect(getResponse.body.password).to.eq('123456');
-          expect(getResponse.body.administrador).to.eq('true');
-        });
-      });
-    });
-  });
-});
+    ${cadastro_json}=    Set Variable    ${cadastro.json()}
+    ${id}=    Set Variable    ${cadastro_json["_id"]}
+
+    # Gera um novo e-mail para atualização
+    ${novo_email}=    Generate Random String    10    [LOWER]
+    ${novo_email}=    Set Variable    ${novo_email}@example.com
+
+    ${usuario_atualizado}=    Create Dictionary
+    ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa - Atualizado
+    ...    email=${novo_email}
+    ...    password=4r3e2w1q
+    ...    administrador=true
+
+    # Atualiza o usuário
+    ${response}=    PUT On Session
+    ...    serverest
+    ...    ${USUARIOS}/${id}
+    ...    json=${usuario_atualizado}
+
+    Status Should Be    200    ${response}
+
+    ${json}=    Set Variable    ${response.json()}
+
+    Should Be Equal As Strings
+    ...    ${json["message"]}
+    ...    Registro alterado com sucesso
+
+    # Consulta o usuário atualizado
+    ${consulta}=    GET On Session
+    ...    serverest
+    ...    ${USUARIOS}/${id}
+
+    Status Should Be    200    ${consulta}
+
+    ${usuario_consulta}=    Set Variable    ${consulta.json()}
+
+    # Valida que os dados foram atualizados
+    Should Be Equal As Strings
+    ...    ${usuario_consulta["nome"]}
+    ...    ${usuario_atualizado["nome"]}
+
+    Should Be Equal As Strings
+    ...    ${usuario_consulta["email"]}
+    ...    ${usuario_atualizado["email"]}
+
+    Should Be Equal As Strings
+    ...    ${usuario_consulta["password"]}
+    ...    ${usuario_atualizado["password"]}
+
+    Should Be Equal As Strings
+    ...    ${usuario_consulta["administrador"]}
+    ...    ${usuario_atualizado["administrador"]}
+
+    # Valida que o ID permaneceu o mesmo
+    Should Be Equal As Strings
+    ...    ${usuario_consulta["_id"]}
+    ...    ${id}
+
+*** Keywords ***
+Criar Sessao
+    Create Session
+    ...    serverest
+    ...    ${BASE_URL}
+    ...    headers={"Content-Type":"application/json"}
