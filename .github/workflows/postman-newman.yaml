@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Postman collection with Newman
         run: |
-          newman run ./api-tests/postman/collections/serverest.postman_collection.json \
+          newman run ./api-tests/postman/collections/serverest.json \
             --reporters cli,html \
             --reporter-html-export newman-report.html
 
