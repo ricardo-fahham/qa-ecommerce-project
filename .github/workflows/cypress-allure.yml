@@ -6,7 +6,10 @@ on:
             - main
     schedule:
     - cron: '0 9 * * *'   # todo dia às 09:00 UTC
-    
+
+permissions:
+  contents: write
+
 jobs:
     generate-report:
         runs-on: ubuntu-latest
