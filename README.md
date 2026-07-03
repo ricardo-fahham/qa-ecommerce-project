@@ -4,6 +4,12 @@ Projeto de Quality Assurance desenvolvido para validar a aplicação de e-commer
 
 O objetivo deste projeto é demonstrar conhecimentos em testes manuais e automatizados, qualidade de software, integração contínua e reporte de defeitos, utilizando ferramentas amplamente adotadas pelo mercado.
 
+## **API Utilizada** 
+
+**[Serverest.dev](https://serverest.dev)**
+
+O ServeRest é uma API REST gratuita que simula uma loja virtual com intuito de servir de material de estudos de testes de API.
+
 ## **Principais atividades**
 
 * Elaboração de Plano de Testes
@@ -17,26 +23,13 @@ O objetivo deste projeto é demonstrar conhecimentos em testes manuais e automat
 
 ## **Tecnologias e Ferramentas**
 
-### Automação Web
+| Categoria                  | Ferramentas                          |
+| -------------------------- | ------------------------------------ |
+| **Automação Web**       | Cypress, Playwright, Robot Framework |
+| **Testes de API**       | cURL, Postman, Newman                |
+| **Qualidade e Gestão**  | Jira, TestRail, Git e GitHub         |
+| **Integração Contínua** | GitHub Actions                       |
 
-* Cypress
-* Playwright
-* Robot Framework
-
-### Testes de API
-
-* Postman
-* Newman
-
-### Qualidade e Gestão
-
-* Jira
-* TestRail
-* Git e GitHub
-
-### Integração Contínua
-
-* GitHub Actions
 
 ## **Competências demonstradas**
 
@@ -52,7 +45,12 @@ O objetivo deste projeto é demonstrar conhecimentos em testes manuais e automat
 
 Este projeto faz parte do meu portfólio de QA e demonstra minha capacidade de atuar em diferentes etapas do ciclo de testes, desde a análise de requisitos até a automação, execução e monitoramento contínuo da qualidade do software.
 
-## **Como Contribuir**
+## **Como Contribuir ?**
+
+Toda contribuição é bem-vinda e ajuda a tornar este projeto ainda melhor. Abaixo você encontra um guia passo a passo para começar.
+
+<details>
+<summary><strong>Guia passo a passo</strong></summary>
 
 ### 1. Fazer um Fork do projeto
 
@@ -199,3 +197,8 @@ Verifique:
 Explique o que foi feito:
 
 > Adicionada validação de CPF no cadastro de clientes.
+
+O fluxo:
+
+[Um fluxograma do processo de contribuição](./docs/contributing.md)
+</details>
