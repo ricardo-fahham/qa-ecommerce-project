@@ -4,6 +4,7 @@ module.exports = defineConfig({
   env: {
     apiUrl: "https://serverest.dev",
     frontUrl: "https://front.serverest.dev",
+    allure: true
   },
 
   e2e: {
