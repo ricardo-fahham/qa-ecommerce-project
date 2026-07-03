@@ -1,54 +1,71 @@
-name: Cypress Tests with Allure Report
-
+name: allure-report
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-
+    workflow_dispatch:
+    push:
+        branches:
+            - main
+    schedule:
+    - cron: '0 9 * * *'   # todo dia às 09:00 UTC
+    
 jobs:
-  test:
-    runs-on: ubuntu-latest
+    generate-report:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Download Cypress
+              uses: bahmutov/npm-install@v1
+              with:
+                  install-command: npm i
+                  working-directory: automation/web
+              env:
+                  CYPRESS_INSTALL_BINARY: 0
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+            - name: Check Cypress cache
+              run: |
+                  npx cypress cache path
+                  npx cypress cache list
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+            - name: restore / cache the binary
+              id: cache-cypress
+              uses: actions/cache@v3
+              with:
+                  path: ~/.cache/Cypress
+                  key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      cypress-cache-v2-${{ runner.os }}-
+                      cypress-cache-v2-
 
-      - name: Install dependencies
-        working-directory: automation/web/cypress
-        run: npm install
+            - name: Install Cypress
+              working-directory: automation/web
+              run: |
+                  npx cypress install
+                  npx cypress cache list
 
-      - name: Run Cypress tests
-        working-directory: automation/web/cypress
-        run: npm run cy:run
+            - name: Run Cypress
+              continue-on-error: true
+              if: always()
+              working-directory: automation/web
+              run: npm run cy:run
 
-      - name: Generate Allure report
-        working-directory: automation/web/cypress
-        run: npm run allure:generate
+            - name: Get Allure history
+              uses: actions/checkout@v4
+              if: always()
+              continue-on-error: true
+              with:
+                  ref: allure
+                  path: allure
 
-      - name: Upload Allure report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: allure-report
+            - name: Generate Allure Report
+              uses: simple-elf/allure-report-action@master
+              if: always()
+              with:
+                  allure_results: allure-results
+                  gh_pages: allure
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download Allure report
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: allure-report
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-report
+            - name: Deploy report to Github Pages
+              if: always()
+              uses: peaceiris/actions-gh-pages@v4
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_branch: allure
+                  publish_dir: allure-history
