@@ -12,15 +12,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - name: Download Cypress
-              uses: bahmutov/npm-install@v1
-              with:
-                  install-command: npm i
-                  working-directory: automation/web
+            - name: Install dependencies
+              working-directory: automation/web/cypress
               env:
-                  CYPRESS_INSTALL_BINARY: 0
+                CYPRESS_INSTALL_BINARY: 0
+              run: npm ci
 
             - name: Check Cypress cache
+              working-directory: automation/web/cypress
               run: |
                   npx cypress cache path
                   npx cypress cache list
@@ -30,21 +29,21 @@ jobs:
               uses: actions/cache@v3
               with:
                   path: ~/.cache/Cypress
-                  key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+                  key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('automation/web/cypress/package-lock.json') }}
                   restore-keys: |
                       cypress-cache-v2-${{ runner.os }}-
                       cypress-cache-v2-
 
             - name: Install Cypress
-              working-directory: automation/web
+              working-directory: automation/web/cypress
               run: |
                   npx cypress install
                   npx cypress cache list
 
             - name: Run Cypress
+              working-directory: automation/web/cypress
               continue-on-error: true
               if: always()
-              working-directory: automation/web
               run: npm run cy:run
 
             - name: Get Allure history
