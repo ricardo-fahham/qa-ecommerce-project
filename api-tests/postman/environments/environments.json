@@ -4,7 +4,7 @@
 	"values": [
 		{
 			"key": "baseUrl",
-			"value": "",
+			"value": "https://serverest.dev",
 			"type": "default",
 			"enabled": true
 		}
