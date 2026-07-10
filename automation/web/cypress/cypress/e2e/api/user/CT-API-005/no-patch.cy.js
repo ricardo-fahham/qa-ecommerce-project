@@ -8,7 +8,7 @@ describe('Atualizar usuário com PATCH', () => {
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email: emailOriginal,
         password: '1q2w3e4r',
         administrador: 'true'

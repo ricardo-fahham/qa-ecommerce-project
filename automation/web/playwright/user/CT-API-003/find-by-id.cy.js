@@ -6,7 +6,7 @@ describe('CRUD Usuário - Buscar por ID', () => {
       method: 'POST',
       url: '/usuarios',
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email,
         password: '123456',
         administrador: 'true'
@@ -22,7 +22,7 @@ describe('CRUD Usuário - Buscar por ID', () => {
       }).then((getResponse) => {
         expect(getResponse.status).to.eq(200);
         expect(getResponse.body._id).to.eq(userId);
-        expect(getResponse.body.nome).to.eq('Ricardo Fahham - https://youtube.com/@horadoqa');
+        expect(getResponse.body.nome).to.eq('Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa');
         expect(getResponse.body.email).to.eq(email);
       });
     });

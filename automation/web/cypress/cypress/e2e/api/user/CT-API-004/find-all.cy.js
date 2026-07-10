@@ -8,7 +8,7 @@ describe('Listar usuários', () => {
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email,
         password: '1q2w3e4r',
         administrador: 'true'
@@ -29,7 +29,7 @@ describe('Listar usuários', () => {
         );
 
         expect(usuario).to.exist;
-        expect(usuario.nome).to.eq('Ricardo Fahham - https://youtube.com/@horadoqa');
+        expect(usuario.nome).to.eq('Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa');
         expect(usuario.email).to.eq(email);
         expect(usuario.password).to.eq('1q2w3e4r');
         expect(usuario.administrador).to.eq('true');

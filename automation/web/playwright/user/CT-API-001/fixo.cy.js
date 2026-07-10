@@ -7,7 +7,7 @@ describe('Cadastro de usuário', () => {
         'Content-Type': 'application/json'
       },
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email: 'ricardo.qa.teste@example.com',
         password: '123456',
         administrador: 'true'

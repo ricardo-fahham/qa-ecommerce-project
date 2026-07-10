@@ -7,7 +7,7 @@ describe('Atualizar usuário existente', () => {
       method: 'PUT',
       url: `${Cypress.env('apiUrl')}/usuarios/${userId}`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa Atualizado',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa Atualizado',
         email: `${email}`,
         password: '1q2w3e4r',
         administrador: 'true'

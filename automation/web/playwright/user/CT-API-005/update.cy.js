@@ -8,7 +8,7 @@ describe('Atualizar usuário', () => {
       method: 'POST',
       url: 'https://serverest.dev/usuarios',
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email: emailOriginal,
         password: '123456',
         administrador: 'true'
@@ -23,7 +23,7 @@ describe('Atualizar usuário', () => {
         method: 'PUT',
         url: `https://serverest.dev/usuarios/${userId}`,
         body: {
-          nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+          nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
           email: emailAtualizado,
           password: '123456',
           administrador: 'true'
@@ -48,7 +48,7 @@ describe('Atualizar usuário', () => {
 
           // Valida os dados atualizados
           expect(getResponse.body.nome).to.eq(
-            'Ricardo Fahham - https://youtube.com/@horadoqa'
+            'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa'
           );
           expect(getResponse.body.email).to.eq(emailAtualizado);
           expect(getResponse.body.password).to.eq('123456');

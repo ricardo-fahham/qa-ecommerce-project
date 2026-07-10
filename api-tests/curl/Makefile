@@ -5,6 +5,7 @@
 
 API_URL=https://serverest.dev
 TOKEN_FILE=.token
+NOME=Ricardo Fahham
 
 # =========================
 # HELP
@@ -74,7 +75,7 @@ user-create:
 	--data-raw '{ "nome":"Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa", "email":"horadoqa@horadoqa.com.br", "password":"1q2w3e4r", "administrador":"true" }'
 
 user-list:
-	curl --location "$(API_URL)/usuarios" | jq -r '.usuarios[] | select(.nome | contains("Hora do QA")) | ._id' > ids.txt | wc -l ids.txt
+	curl --location "$(API_URL)/usuarios" | jq -r '.usuarios[] | select(.nome | contains("$(NOME)")) | ._id' > ids.txt | wc -l ids.txt
 
 user-get-id:
 	@echo "Informe o ID: "; \
@@ -94,7 +95,7 @@ user-delete-id:
 	curl --location --request DELETE "$(API_URL)/usuarios/$$id"
 
 user-delete-all: user-list
-	@echo "Deletando todos os usuários com 'Hora do QA' no nome..."; \
+	@echo "Deletando todos os usuários com $(NOME) no nome..."; \
 	while read id; do \
 		curl --location --request DELETE "$(API_URL)/usuarios/$$id"; \
 	done < ids.txt; \

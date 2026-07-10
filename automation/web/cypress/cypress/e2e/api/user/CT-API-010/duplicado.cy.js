@@ -9,7 +9,7 @@ describe('CT-API-010 - Cadastro de Usuário com E-mail Duplicado', () => {
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios/`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email,
         password: '1q2w3e4r',
         administrador: 'true'
@@ -27,7 +27,7 @@ describe('CT-API-010 - Cadastro de Usuário com E-mail Duplicado', () => {
         url: `${Cypress.env('apiUrl')}/usuarios/`,
         failOnStatusCode: false,
         body: {
-          nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+          nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
           email,
           password: '1q2w3e4r',
           administrador: 'true'

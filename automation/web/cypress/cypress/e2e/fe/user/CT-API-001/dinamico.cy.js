@@ -12,7 +12,7 @@ describe('Cadastro de usuário', () => {
       cadastrar: '[data-testid="cadastrar"]',
     };
 
-    cy.get(selectors.nome).type('Ricardo Fahham - https://youtube.com/@horadoqa');
+    cy.get(selectors.nome).type('Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa');
     cy.get(selectors.email).type(email);
     cy.get(selectors.senha).type('1q2w3e4r');
     cy.get(selectors.checkbox).check();

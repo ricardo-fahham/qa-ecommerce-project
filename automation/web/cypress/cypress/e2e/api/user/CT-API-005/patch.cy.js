@@ -8,7 +8,7 @@ describe('Atualizar usuário com PATCH', () => {
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email: emailOriginal,
         password: '1q2w3e4r',
         administrador: 'true'
@@ -44,7 +44,7 @@ describe('Atualizar usuário com PATCH', () => {
 
           // Valida que apenas o e-mail foi alterado
           expect(getResponse.body.nome).to.eq(
-            'Ricardo Fahham - https://youtube.com/@horadoqa'
+            'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa'
           );
           expect(getResponse.body.email).to.eq(emailAtualizado);
           expect(getResponse.body.password).to.eq('1q2w3e4r');

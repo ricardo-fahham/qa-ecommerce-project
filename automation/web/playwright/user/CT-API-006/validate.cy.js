@@ -5,7 +5,7 @@ describe('Validar alteração do usuário', () => {
     const email = 'ricardo.1782262633700@example.com'; // Substitua pelo email do usuário que deseja validar
     
     const usuarioAtualizado = {
-      nome: 'Ricardo Fahham - https://youtube.com/@horadoqa Atualizado',
+      nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa Atualizado',
       email: email, 
       password: '123456',
       administrador: 'true'

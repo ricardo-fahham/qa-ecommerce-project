@@ -7,7 +7,7 @@ describe('Excluir Usuário (DELETE)', () => {
       method: 'POST',
       url: '/usuarios',
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email,
         password: '123456',
         administrador: 'true'

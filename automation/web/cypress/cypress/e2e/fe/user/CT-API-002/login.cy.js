@@ -14,7 +14,7 @@ describe('CT-UI-002 - Login de usuário', () => {
       method: 'POST',
       url: `${Cypress.env('apiUrl')}/usuarios`,
       body: {
-        nome: 'Ricardo Fahham - https://youtube.com/@horadoqa',
+        nome: 'Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa',
         email,
         password,
         administrador: 'true'
