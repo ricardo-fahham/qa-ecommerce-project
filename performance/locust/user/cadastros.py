@@ -9,7 +9,7 @@ class Usuario(HttpUser):
     def criar_usuario(self):
         payload = {
             "nome": "Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa",
-            "email": "horadoqa@test.com",
+            "email": f"horadoqa-{int(time.time() * 1000)}-{random.randint(1, 99999)}@horadoqa.com.br",
             "password": "1q2w3e4r",
             "administrador": "true"
         }
@@ -31,4 +31,4 @@ class Usuario(HttpUser):
                     f"Status: {response.status_code} - {response.text}"
                 )
 
-# locust -f cadastro.py --host=https://serverest.dev
+# locust -f cadastros.py --host=https://serverest.dev
