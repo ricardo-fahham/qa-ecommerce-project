@@ -21,8 +21,15 @@ curl --location 'https://serverest.dev/usuarios'
   "quantidade": 2,
   "usuarios": [
     {
-      "nome": "Ricardo Fahham",
-      "email": "ricardo.qa.teste@example.com",
+      "nome": "Fulano da Silva",
+      "email": "fulano@qa.com",
+      "password": "teste",
+      "administrador": "true",
+      "_id": "0uxuPY0cbmQhpEz1"
+    },
+    {
+      "nome": "Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa",
+      "email": "horadoqa@horadoqa.com.br",
       "password": "123456",
       "administrador": "true",
       "_id": "DOQOugWPYpvN3OaS"

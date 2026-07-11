@@ -7,7 +7,7 @@ describe('Login de usuário', () => {
         'Content-Type': 'application/json'
       },
       body: {
-        email: 'ricardo.horadoqa@example.com',
+        email: 'horadoqa@horadoqa.com.br',
         password: '1q2w3e4r'
       }
     }).then((response) => {

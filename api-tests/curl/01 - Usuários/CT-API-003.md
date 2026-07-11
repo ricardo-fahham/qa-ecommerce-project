@@ -18,9 +18,9 @@ curl --location 'https://serverest.dev/usuarios/{_id}'
 
 ```json
 {
-  "nome": "Ricardo Fahham",
-  "email": "ricardo.qa.teste@example.com",
-  "password": "123456",
+  "nome": "Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa",
+  "email": "horadoqa@horadoqa.com.br",
+  "password": "1q2w3e4r",
   "administrador": "true",
   "_id": "DOQOugWPYpvN3OaS"
 }

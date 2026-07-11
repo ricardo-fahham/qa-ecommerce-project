@@ -10,8 +10,8 @@ Quando a autenticação for realizada com sucesso, a API retornará um token de 
 curl --location 'https://serverest.dev/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "email": "ricardo.qa.teste@example.com",
-  "password": "123456"
+  "email": "horadoqa@hoadoqa.com.br",
+  "password": "1q2w3e4r"
 }'
 ```
 

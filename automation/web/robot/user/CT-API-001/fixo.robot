@@ -16,7 +16,7 @@ CT-API-001 - Cadastrar Usuário Administrador
 
     ${body}=    Create Dictionary
     ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
-    ...    email=horadoqa@example.com
+    ...    email=horadoqa@horadoqa.com.br
     ...    password=1q2w3e4r
     ...    administrador=true
 
@@ -36,13 +36,13 @@ CT-API-001 - Cadastrar Usuário Administrador
     Dictionary Should Contain Key    ${json}    _id
     Should Not Be Empty    ${json["_id"]}
 
-CT-API-001 - Não Permitir Cadastro com E-mail Duplicado
+CT-API-002 - Não Permitir Cadastro com E-mail Duplicado
     ${email}=    Generate Random String    10    [LOWER]
     ${email}=    Set Variable    ${email}@example.com
 
     ${body}=    Create Dictionary
     ...    nome=Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa
-    ...    email=horadoqa@texample.com
+    ...    email=horadoqa3@horadoqa.com.br
     ...    password=1q2w3e4r
     ...    administrador=true
 

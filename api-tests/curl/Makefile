@@ -5,7 +5,7 @@
 
 API_URL=https://serverest.dev
 TOKEN_FILE=.token
-NOME=Ricardo Fahham
+NOME=Hora do QA
 
 # =========================
 # HELP
@@ -70,12 +70,12 @@ clear-token:
 # =========================
 
 user-create:
-	curl --location "$(API_URL)/usuarios" \
+	curl -s --location "$(API_URL)/usuarios" \
 	--header "Content-Type: application/json" \
 	--data-raw '{ "nome":"Hora do QA - Aprenda sobre Qualidade de Software em: https://youtube.com/@horadoqa", "email":"horadoqa@horadoqa.com.br", "password":"1q2w3e4r", "administrador":"true" }'
 
 user-list:
-	curl --location "$(API_URL)/usuarios" | jq -r '.usuarios[] | select(.nome | contains("$(NOME)")) | ._id' > ids.txt | wc -l ids.txt
+	curl -s --location "$(API_URL)/usuarios" | jq -r '.usuarios[] | select(.nome | contains("$(NOME)")) | ._id' > ids.txt | wc -l ids.txt
 
 user-get-id:
 	@echo "Informe o ID: "; \
@@ -85,19 +85,19 @@ user-get-id:
 user-update:
 	@echo "Informe o ID: "; \
 	read id; \
-	curl --location --request PUT "$(API_URL)/usuarios/$$id" \
+	curl -s --location --request PUT "$(API_URL)/usuarios/$$id" \
 	--header "Content-Type: application/json" \
 	--data-raw '{ "nome":"QA Updated", "email":"updated@test.com", "password":"123456", "administrador":"true" }'
 
 user-delete-id:
 	@echo "Informe o ID: "; \
 	read id; \
-	curl --location --request DELETE "$(API_URL)/usuarios/$$id"
+	curl -s --location --request DELETE "$(API_URL)/usuarios/$$id"
 
 user-delete-all: user-list
 	@echo "Deletando todos os usuários com $(NOME) no nome..."; \
 	while read id; do \
-		curl --location --request DELETE "$(API_URL)/usuarios/$$id"; \
+		curl -s --location --request DELETE "$(API_URL)/usuarios/$$id"; \
 	done < ids.txt; \
 	rm -f ids.txt; \
 	echo "Todos os usuários deletados."
@@ -107,25 +107,25 @@ user-delete-all: user-list
 # =========================
 
 product-create:
-	curl --location "$(API_URL)/produtos" \
+	curl -s --location "$(API_URL)/produtos" \
 	--header "Content-Type: application/json" \
 	--header "Authorization: $$(cat $(TOKEN_FILE))" \
 	--data-raw '{ "nome":"Mouse QA", "preco":100, "descricao":"Produto de teste", "quantidade":10 }'
 
 product-list:
-	curl --location "$(API_URL)/produtos" \
+	curl -s --location "$(API_URL)/produtos" \
 	--header "Authorization: $$(cat $(TOKEN_FILE))"
 
 product-get:
 	@echo "Informe o ID: "; \
 	read id; \
-	curl --location "$(API_URL)/produtos/$$id" \
+	curl -s --location "$(API_URL)/produtos/$$id" \
 	--header "Authorization: $$(cat $(TOKEN_FILE))"
 
 product-update:
 	@echo "Informe o ID: "; \
 	read id; \
-	curl --location --request PUT "$(API_URL)/produtos/$$id" \
+	curl -s --location --request PUT "$(API_URL)/produtos/$$id" \
 	--header "Content-Type: application/json" \
 	--header "Authorization: $$(cat $(TOKEN_FILE))" \
 	--data-raw '{ "nome":"Mouse QA Updated", "preco":150, "descricao":"Atualizado", "quantidade":20 }'
@@ -133,5 +133,5 @@ product-update:
 product-delete:
 	@echo "Informe o ID: "; \
 	read id; \
-	curl --location --request DELETE "$(API_URL)/produtos/$$id" \
+	curl -s --location --request DELETE "$(API_URL)/produtos/$$id" \
 	--header "Authorization: $$(cat $(TOKEN_FILE))"

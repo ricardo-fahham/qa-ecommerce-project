@@ -10,8 +10,8 @@ Executar novamente o cadastro utilizando o mesmo e-mail já registrado no cenár
 curl --location 'https://serverest.dev/usuarios' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "nome": "Ricardo Fahham",
-  "email": "ricardo.qa.teste@example.com",
+  "nome": "Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa",
+  "email": "horadoqa@hoadoqa.com.br",
   "password": "123456",
   "administrador": "true"
 }'

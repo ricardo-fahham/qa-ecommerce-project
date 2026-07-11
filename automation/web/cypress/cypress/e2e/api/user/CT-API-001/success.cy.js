@@ -8,7 +8,7 @@ describe('Cadastro de usuário', () => {
       },
       body: {
         nome: 'Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa',
-        email: 'horadoqa@example.com',
+        email: 'horadoqa@horadoqa.com.br',
         password: '1q2w3e4r',
         administrador: 'true'
       }

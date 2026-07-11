@@ -8,8 +8,8 @@ Para atualizar os dados de um usuário, é necessário informar o identificador 
 curl --location --request PUT 'https://serverest.dev/usuarios/{_id}' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "nome": "Ricardo Fahham Atualizado",
-  "email": "ricardo.qa@example.com",
+  "nome": "Hora do QA - Aprenda sobre Testes de API em: https://youtube.com/@horadoqa Atualizado",
+  "email": "horadoqa@hoadoqa.com.br",
   "password": "123456",
   "administrador": "true"
 }'

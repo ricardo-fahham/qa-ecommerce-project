@@ -12,7 +12,7 @@ Este caso de teste contempla cenários negativos de autenticação, validando o 
 curl --location 'https://serverest.dev/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "email": "ricardo.qa.teste@example.com",
+  "email": "horadoqa@horadoqa.com.br",
   "password": "senha_errada"
 }'
 ```
@@ -37,8 +37,8 @@ curl --location 'https://serverest.dev/login' \
 curl --location 'https://serverest.dev/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "email": "ricardo.qa.teste.example.com",
-  "password": "123456"
+  "email": "horadoqahoradoqa.com.br",
+  "password": "1q2w3e4r"
 }'
 ```
 
